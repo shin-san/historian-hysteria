@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -45,9 +46,34 @@ public class Main {
 
             System.out.println(totalDistance);
 
+            // part two
+
+            System.out.println(partTwo(location1, location2));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Long partTwo(List<Integer> location1, List<Integer> location2) {
+
+        List<Long> similarityScores = new ArrayList<>();
+
+        var totalScore = 0L;
+
+        // part two
+        location1.forEach(location1Distance -> {
+            var location1Similarity = location2.stream()
+                    .filter(location1Distance::equals)
+                    .count();
+
+            similarityScores.add(location1Distance * location1Similarity);
+        });
+
+        for (Long similarityScore: similarityScores) {
+            totalScore += similarityScore;
+        }
+
+        return totalScore;
     }
 }
